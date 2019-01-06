@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 引入 schema约束 -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+            http://www.springframework.org/schema/beans  
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/mvc  
+            http://www.springframework.org/schema/mvc/spring-mvc.xsd
+            http://www.springframework.org/schema/context   
+            http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 开启注解扫描 -->
+    <context:component-scan base-package="com.lxf.ichat.controller"/>
+
+    <!-- Default Servlet Handler (For Resources *.css, *.js, image,..) -->
+    <mvc:default-servlet-handler/>
+
+    <mvc:annotation-driven>
+        <!--<mvc:message-converters register-defaults="false"> &lt;!&ndash; 不使用默认配置 &ndash;&gt;-->
+            <!--<bean-->
+                    <!--class="org.springframework.http.converter.StringHttpMessageConverter"/>-->
+            <!--<bean-->
+                    <!--class="org.springframework.http.converter.ByteArrayHttpMessageConverter"/>-->
+            <!--<bean-->
+                    <!--class="org.springframework.http.converter.BufferedImageHttpMessageConverter"/>-->
+            <!--<bean-->
+                    <!--class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">-->
+                <!--<property name="supportedMediaTypes"> &lt;!&ndash; 支持的媒体类型 &ndash;&gt;-->
+                    <!--<list>-->
+                        <!--<value>text/html;charset=UTF-8</value>&lt;!&ndash; 顺序不要写反了，否则IE会出现下载提示 &ndash;&gt;-->
+                        <!--<value>text/json;charset=UTF-8</value>-->
+                        <!--<value>application/json;charset=UTF-8</value>-->
+                    <!--</list>-->
+                <!--</property>-->
+            <!--</bean>-->
+        <!--</mvc:message-converters>-->
+    </mvc:annotation-driven>
+
+    <!-- 支持文件上传 -->
+    <!--<bean UID="multipartResolver"-->
+          <!--class="org.springframework.web.multipart.commons.CommonsMultipartResolver">-->
+        <!--<property name="defaultEncoding" value="UTF-8"></property>-->
+        <!--<property name="maxInMemorySize" value="1024000000"></property>-->
+    <!--</bean>-->
+
+    <!-- 校验器 -->
+    <!-- 校验错误信息配置文件 -->
+    <!--<bean UID="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">-->
+        <!--&lt;!&ndash; 资源文件名 &ndash;&gt;-->
+        <!--&lt;!&ndash;<property name="basename" value="classpath:validationMessages/validationMessages"/>&ndash;&gt;-->
+        <!--<property name="defaultEncoding" value="UTF-8"></property>-->
+        <!--&lt;!&ndash; 缓存时间 &ndash;&gt;-->
+        <!--<property name="cacheMillis" value="120"></property>-->
+    <!--</bean>-->
+
+    <!-- JSP视图解析器 -->
+    <bean
+            class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/"></property>
+        <property name="suffix" value=".jsp"></property>
+    </bean>
+
+
+    <!-- 静态资源解析 -->
+    <mvc:resources location="/images/" mapping="/images/**"/>
+    <mvc:resources location="/js/" mapping="/js/**"></mvc:resources>
+
+    <!-- 拦截器 -->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="com.lxf.ichat.interceptor.EncodingInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+</beans>
